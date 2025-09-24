@@ -646,18 +646,6 @@ class LangFuseLogger:
                 if existing_trace_id is None:
                     trace_params.update({"tags": tags})
 
-            proxy_server_request = litellm_params.get("proxy_server_request", None)
-            if proxy_server_request:
-                proxy_server_request.get("method", None)
-                proxy_server_request.get("url", None)
-                headers = proxy_server_request.get("headers", None)
-                clean_headers = {}
-                if headers:
-                    for key, value in headers.items():
-                        # these headers can leak our API keys and/or JWT tokens
-                        if key.lower() not in ["authorization", "cookie", "referer"]:
-                            clean_headers[key] = value
-
             trace: StatefulTraceClient = self.Langfuse.trace(**trace_params)
 
             # Log provider specific information as a span

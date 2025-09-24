@@ -28,7 +28,11 @@ class GoogleAIStudioTokenCounter:
         """
         import copy
 
-        from google.genai.types import FunctionResponse
+        try:
+            from google.genai.types import FunctionResponse
+        except ImportError:
+            # If google.genai is not available, return contents as-is
+            return contents
 
         cleaned_contents = copy.deepcopy(contents)
 
